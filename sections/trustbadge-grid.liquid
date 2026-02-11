@@ -1,0 +1,213 @@
+<!-- variables -->
+{%- liquid
+  assign unique_id = section.id
+  assign padding_block = section.settings.section_padding_block
+  assign padding_inline = section.settings.section_padding_inline
+  assign section_bg_color = section.settings.section_bg_color
+  assign trustbadge_bg_color = section.settings.trustbadge_bg_color
+  assign svg_color = section.settings.svg_color
+  assign title_color = section.settings.title_color
+  assign text_color = section.settings.text_color
+  assign svg_size = section.settings.svg_size
+-%}
+
+
+<style>
+  .trustbadges-body--{{ unique_id }} {
+    background: {{ section_bg_color }};
+    padding: {{ padding_block }}rem{{ padding_inline }}rem;
+  }
+
+  .trustbadges-content-container-only-container--{{ unique_id }} {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+
+  .trustbadges-content {
+    background: {{ trustbadge_bg_color }};
+    padding: 2rem 1rem;
+    border-radius: 8px;
+    text-align: center;
+    transition: 0.3s ease;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+
+  .trustbadges-content:hover {
+    transform: translateY(-5px);
+  }
+
+  .trustbadges-content svg {
+    width: {{ svg_size }}rem;
+    height: {{ svg_size }}rem;
+    color: {{ svg_color }};
+  }
+
+  .trustbadges-content span:first-of-type {
+    color: {{ title_color }};
+    font-weight: 600;
+    font-size: 1.2rem;
+  }
+
+  .trustbadges-content span:last-of-type {
+    color: {{ text_color }};
+    font-size: 1rem;
+  }
+
+  /* Tablet */
+  @media (max-width: 1024px) {
+    .trustbadges-content-container-only-container--{{ unique_id }} {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+  }
+
+  /* Mobile */
+  @media (max-width: 640px) {
+    .trustbadges-content-container-only-container--{{ unique_id }} {
+      grid-template-columns: repeat(1, 1fr);
+      gap: 1rem;
+    }
+  }
+
+
+</style>
+
+<section class="trustbadges-body--{{unique_id}}">
+  <div class="trustbadges-content-container-only-container--{{unique_id}}">
+
+    <!-- Trushbadge 1 -->
+    {% for block in section.blocks %}
+      {%- liquid
+        assign path = block.settings.svg_icon
+        assign title =block.settings.title
+        assign text = block.settings.paragraph
+      -%}
+      <div class="trustbadges-content" {{ block.shopify_attributes }}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          viewBox="0 0 16 16"
+          aria-hidden="true">
+          <path {{ path }} />
+
+
+        </svg>
+        <span>{{ title }}</span>
+        <span>{{ text }}</span>
+
+      </div>
+    {% endfor %}
+
+  </div>
+
+
+</section>
+
+<!-- Schema -->
+{% schema %}
+  {
+    "name": "Trustbadge Grid",
+    "tag": "section",
+    "class": "section",
+
+    "settings": [
+      {
+        "type": "range",
+        "id": "section_padding_block",
+        "label": "Padding top-bottom",
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "default": 5
+      },
+      {
+        "type": "range",
+        "id": "section_padding_inline",
+        "label": "Padding left-right",
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "default": 4
+      },
+      {
+        "type": "color",
+        "id": "section_bg_color",
+        "label": "Section background",
+        "default": "#1e1e1e"
+      },
+      {
+        "type": "color",
+        "id": "trustbadge_bg_color",
+        "label": "Card background",
+        "default": "#2a2a2a"
+      }, {
+        "type": "color",
+        "id": "svg_color",
+        "label": "SVG color",
+        "default": "#ffffff"
+      }, {
+        "type": "color",
+        "id": "title_color",
+        "label": "Title color",
+        "default": "#ffffff"
+      }, {
+        "type": "color",
+        "id": "text_color",
+        "label": "Text color",
+        "default": "#cccccc"
+      }, {
+        "type": "range",
+        "id": "svg_size",
+        "label": "SVG size",
+        "min": 1,
+        "max": 6,
+        "step": 0.5,
+        "default": 3
+      }
+    ],
+
+    "blocks": [
+      {
+        "type": "trustbadge",
+        "name": "Trust Badge",
+        "settings": [
+          {
+            "type": "textarea",
+            "id": "svg_icon",
+            "label": "SVG Path",
+            "info": "Paste only the d attribute (example: d='M8 0L16 16H0Z')"
+          }, {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Free Shipping"
+          }, {
+            "type": "inline_richtext",
+            "id": "paragraph",
+            "label": "Text",
+            "default": "Free shipping on all orders"
+          }
+        ]
+      }
+    ],
+
+    "presets": [
+      {
+        "name": "Trustbadge Grid",
+        "category": "Custom Sections"
+      }
+    ]
+  }
+{% endschema %}
