@@ -1,0 +1,1 @@
+### Shopify liquid custom sections
