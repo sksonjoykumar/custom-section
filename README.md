@@ -1,6 +1,6 @@
 # 🛍️ Shopify Custom Sections
 
-![Live_link](https://sparktech-agency-task.myshopify.com/)
+[Live_link](https://sparktech-agency-task.myshopify.com/)
 
 A custom Shopify theme enhancement project created as part of a **Shopify Developer job task**.  
 This repository includes **three fully custom, responsive Shopify sections** built using **Liquid, HTML, CSS, and JavaScript**, following Shopify best practices.
